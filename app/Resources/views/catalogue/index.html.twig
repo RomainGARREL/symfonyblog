@@ -1,0 +1,30 @@
+{% extends "::catalogue/layout.html.twig" %}
+
+
+{% block body_layout %}
+    {#    {% for message in app.session.flashbag.get('succes') %}
+            <p class="alert alert-success">{{message}}</p>
+        {% endfor %}#}
+
+
+    {% for categorie in categories %}
+
+        <a href= '{{path("categorie_catalogue",{id:categorie.id})}}'>
+            <h1>{{ categorie.titre}}</h1>
+        </a>
+
+
+
+
+
+    {% endfor %}
+
+
+{%endblock%}
+
+
+
+
+{% block title %}
+    {{parent()}} - Index
+{%endblock%}

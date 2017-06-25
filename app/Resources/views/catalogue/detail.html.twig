@@ -1,0 +1,74 @@
+{% extends "::catalogue/layout.html.twig" %}
+
+
+{% block body_layout %}
+    {% for message in app.session.flashbag.get('succes') %}
+        <p class="alert alert-success">{{message}}</p>
+    {% endfor %}
+
+    <h1>{{ produit.titre}}</h1>
+    <p>{{ produit.prix}} Eur</p>
+    <p>{{ produit.contenu | raw }}</p>
+    <p>{{ produit.date | date('d-m-y') }}</p>
+
+    <div id="note">
+        {% if produit.image %}
+            <img src="{{produit.image.url}}" alt="{{produit.image.alt}}" >
+        {% else  %}
+            <p>Pas d'image disponible</p>
+        {% endif %}
+    </div>
+
+    {% for note in produit.notes %}
+        <p>{{ note.valeur }}</p>
+    {% else  %}
+        <p>Pas de note</p>
+    {% endfor %}
+
+    {{form_start(form)}}
+    {{form_widget(form)}}<img src="{{ asset('image/rolling.gif')}}" style="display:none" id="loading">
+    {{form_end(form)}}
+
+{%endblock%}
+{% block javascripts %}
+    <script>
+        $('form[name=appbundle_note]').submit(//designe le formulaire
+                function (e) {
+                    $('#erreur-ajax').remove();
+                    e.preventDefault(); // bloquer l'utilisation du bouton ajouter
+                    $('#loading').show(); // fait apparaitre legif when click on ajouter
+                    $('form[name=appbundle_note] button').addClass('disabled').prop('disabled', true);
+                    //above permet d'interdire de recliquer sur soumettre qund on soummet le formulaire
+
+                    $.ajax(
+                            {
+                                url: '{{path('ajax_note_catalogue')}}',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    id:{{produit.id}} ,
+                                    valeur: $('#appbundle_note_valeur').val()
+                                },
+                                error: function () {
+                                    alert('error');
+                                },
+                                success: function (data) {
+                                    // Ce que l'on va recuperer de notre methode
+                                    $('#loading').hide();
+                                    $('form[name = appbundle_note] button')
+                                            .removeClass('disabled')
+                                            .prop('disabled', false)
+                                    if (data.success) {
+                                        $('#note').prepend('<p>' + data.note.valeur + '</p>');
+                                    } else {
+                                        $('form[name = appbundle_note] button').after('<p id="erreur_ajax" class="alert alert-danger">Pb: Et merde Catalogue </p>');
+                                    }
+
+                                }
+                            }
+                    );
+                }
+        );
+        // $ est un alias pour JQuery
+    </script>
+{% endblock %}

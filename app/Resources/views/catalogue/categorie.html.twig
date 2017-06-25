@@ -1,0 +1,24 @@
+
+
+{% block body_layout %}
+
+
+    {% for produit in produits %}
+        <a href= '{{path("detail_catalogue",{id:produit.id})}}'>
+            <h1>{{ produit.titre}}</h1>
+        </a>
+        <p>{{ produit.contenu | raw }}</p>
+        <p>{{ produit.date | date('d-m-y') }}</p>
+        <p>{{ produit.prix }}</p>
+
+
+
+        {% if produit.image %}
+            <img src="{{produit.image.url}}" alt="{{produit.image.alt}}" >
+        {% else  %}
+            <p>Pas d'image disponible</p>
+        {% endif %}
+
+
+    {% endfor %}
+{%endblock%}

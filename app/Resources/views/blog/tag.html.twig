@@ -1,0 +1,23 @@
+
+
+{% block body_layout %}
+
+    <h3>{{ count}}</h3>
+    {% for article in articles %}
+        <a href= '{{path("blog_detail",{id:article.id})}}'>
+            <h1>{{ article.titre}}</h1>
+        </a>
+        <p>{{ article.contenu | raw }}</p>
+        <p>{{ article.date | date('d-m-y') }}</p>
+
+
+
+        {% if article.image %}
+            <img src="{{article.image.url}}" alt="{{article.image.alt}}" >
+        {% else  %}
+            <p>Pas d'image disponible</p>
+        {% endif %}
+
+
+    {% endfor %}
+{%endblock%}
