@@ -1,0 +1,12 @@
+{% extends "::catalogue/layout.html.twig" %}
+{% block body_layout %}
+
+    <ul class="list-unstyled">
+        {% for produit in produits %}
+            <li>
+                <a href="{{path('detail_catalogue', {id: produit.id})}}">{{produit.titre}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

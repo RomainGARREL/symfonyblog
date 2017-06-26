@@ -118,4 +118,14 @@ class CatalogueController extends Controller {
         }
     }
 
+    /**
+     * @Route("/new_produits_catalogue", name="new_produits_catalogue")
+     *
+     */
+    public function ajaxNewProduitAction(Request $request) {
+        $pm = $this->getDoctrine()->getManager()->getRepository('AppBundle:Produit');
+        $produits = $pm->findNewProd(3);
+        return $this->render('catalogue/ajaxNewProduits.html.twig', ['produits' => $produits]);
+    }
+
 }

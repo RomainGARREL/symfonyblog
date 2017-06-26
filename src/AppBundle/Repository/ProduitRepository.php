@@ -46,4 +46,15 @@ class ProduitRepository extends EntityRepository {
         return $produit;
     }
 
+    public function findNewProd($limit) {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+                ->orderBy('p.date', 'DESC')
+                ->setMaxResults($limit);
+        //
+        $querry = $qb->getQuery();
+        $produit = $querry->getResult(); // equivalent d'un fetch
+        return $produit;
+    }
+
 }

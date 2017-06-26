@@ -2,6 +2,22 @@
 {% block title %}
     Catalogue
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('#myModal').on('show.bs.modal',
+                function (e) {
+                    $.ajax({
+                        url: '{{path('new_produits_catalogue')}}', // url de ma methode php
+                        dataType: 'html',
+                        success: function (data) {
+                            $('.modal-body').html(data);
+                        }
+                    });
+                });
+    </script>
+{% endblock %}
+
 {% block body %}
     {% block body_layout %}
 
