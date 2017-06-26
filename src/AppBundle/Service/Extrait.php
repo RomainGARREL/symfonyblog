@@ -15,6 +15,12 @@ namespace AppBundle\Service;
  */
 class Extrait {
 
+    private $session;
+
+    public function __construct(\Symfony\Component\HttpFoundation\Session\Session $session) {
+        $this->session = $session;
+    }
+
     public function get($texte) {
         $texte = strip_tags($texte);
 
