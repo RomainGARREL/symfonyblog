@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Article
  *
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  */
@@ -58,6 +59,13 @@ class Article {
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modification", type="datetime")
+     */
+    private $dateModification;
 
     /**
      * @var boolean
@@ -223,6 +231,7 @@ class Article {
         //ci-dessous a incorporer manuellement
         $this->publication = true;
         $this->date = New \DateTime;
+        $this->dateModification = New \DateTime;
     }
 
     /**
@@ -285,6 +294,35 @@ class Article {
      */
     public function getCommentaires() {
         return $this->commentaires;
+    }
+
+    /**
+     * Set dateModification
+     *
+     * @param \DateTime $dateModification
+     *
+     * @return Article
+     */
+    public function setDateModification($dateModification) {
+        $this->dateModification = $dateModification;
+
+        return $this;
+    }
+
+    /**
+     * Get dateModification
+     *
+     * @return \DateTime
+     */
+    public function getDateModification() {
+        return $this->dateModification;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDateModification() {
+        $this->setDateModification(new \DateTime);
     }
 
 }
