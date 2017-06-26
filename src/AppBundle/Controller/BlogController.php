@@ -23,7 +23,7 @@ class BlogController extends Controller {
      * defaults={"p": 1},
      * requirements={"p": "\d+"})
      */
-    public function indexAction($p) {
+    public function indexAction(\AppBundle\Service\Extrait $extrait, $p) {
         $em = $this->getDoctrine()->getManager();
 
         $ar = $em->getRepository('AppBundle:Article');
@@ -31,8 +31,26 @@ class BlogController extends Controller {
         $articles = $ar->getdArticlesByPublicationWithLeftJoin(); // pas oublier que ces tous les articleS
         // Cette ligne de code ci_haut permet de diminuer la quantité de requete executer et le temps de reponse
 
+        foreach ($articles as $article) {
+
+            $article->setExtrait($extrait->get($article->getContenu()));
+        }
         return $this->render('blog/index.html.twig', ['articles' => $articles]);
     }
+
+//        /**
+//     * @Route("/default", name="homepage")
+//     */
+//    public function indexAction(Request $request, Extrait $extrait) {
+//        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->findAll();
+//        foreach ($articles as $article) {
+//
+//            $article->setExtrait($extrait->get($article->getContenu));
+//        }
+//        return $this->render('default/index.html.twig', [
+//                    'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
+//        ]);
+//    }
 
     /**
      * @Route("/ajouter", name="blog_ajouter")

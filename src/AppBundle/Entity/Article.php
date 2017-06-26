@@ -47,6 +47,21 @@ class Article {
     private $contenu;
 
     /**
+     *
+     * @var string
+     */
+    private $extrait;
+
+    public function getExtrait() {
+        return $this->extrait;
+    }
+
+    public function setExtrait($extrait) {
+        $this->extrait = $extrait;
+        return $this;
+    }
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Tag", cascade={"persist"}, inversedBy="articles")
