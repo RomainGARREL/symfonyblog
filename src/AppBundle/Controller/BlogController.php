@@ -23,7 +23,7 @@ class BlogController extends Controller {
      * defaults={"p": 1},
      * requirements={"p": "\d+"})
      */
-    public function indexAction(\AppBundle\Service\Extrait $extrait, $p) {
+    public function indexAction(Request $request, \AppBundle\Service\Extrait $extrait, \AppBundle\Service\ExtraitWithLink $extraitWithLink, $p) {
         $em = $this->getDoctrine()->getManager();
 
         $ar = $em->getRepository('AppBundle:Article');
@@ -33,7 +33,8 @@ class BlogController extends Controller {
 
         foreach ($articles as $article) {
 
-            $article->setExtrait($extrait->get($article->getContenu()));
+            //$article->setExtrait($extrait->get($article->getContenu()));
+            $article->setExtrait($extraitWithLink->get($article));
         }
         return $this->render('blog/index.html.twig', ['articles' => $articles]);
     }

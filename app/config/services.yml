@@ -1,7 +1,8 @@
 # Learn more about services, parameters and containers at
 # https://symfony.com/doc/current/service_container.html
 parameters:
-    suite: ' [...]'
+    suite: '...'
+    max: 50
 
 services:
     # default configuration for services in *this* file
@@ -33,4 +34,7 @@ services:
     AppBundle\Service\Extrait:
         arguments:
             $max: 15
-            $suite: '%suite%'
+            $suite: '%max%'
+    AppBundle\Service\ExtraitWithLink:
+        arguments:
+            $max: '%max%'
