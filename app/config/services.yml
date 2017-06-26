@@ -32,5 +32,5 @@ services:
     # add more services, or override services that need manual wiring
     AppBundle\Service\Extrait:
         arguments:
-            $max: 150
-            $suite: '%suites%'
+            $max: 15
+            $suite: '%suite%'
