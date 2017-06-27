@@ -46,6 +46,6 @@ services:
     app.maintenance:
         class: AppBundle\Listener\MaintenanceListener
         arguments:
-            $actif: true
+            $actif: false
         tags:
             - { name: kernel.event_listener, event: kernel.request }

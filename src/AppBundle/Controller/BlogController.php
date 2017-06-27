@@ -24,19 +24,11 @@ class BlogController extends Controller {
      * requirements={"p": "\d+"})
      */
     public function indexAction(Request $request, \AppBundle\Service\Extrait $extrait, \AppBundle\Service\ExtraitWithLink $extraitWithLink, $p) {
-        $em = $this->getDoctrine()->getManager();
+//        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination(0, 5);
 
-        $ar = $em->getRepository('AppBundle:Article');
-        // ar pour Article Repository
-        $articles = $ar->getdArticlesByPublicationWithLeftJoin(); // pas oublier que ces tous les articleS
-        // Cette ligne de code ci_haut permet de diminuer la quantité de requete executer et le temps de reponse
-
-        foreach ($articles as $article) {
-
-            //$article->setExtrait($extrait->get($article->getContenu()));
-            $article->setExtrait($extraitWithLink->get($article));
-        }
-        return $this->render('blog/index.html.twig', ['articles' => $articles]);
+        return $this->render('blog/index.html.twig', [
+                    'articles' => $articles,
+        ]);
     }
 
 //        /**

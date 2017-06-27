@@ -43,6 +43,22 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
         return $article;
     }
 
+    public function getdArticlesWithJoinAndWithPagination($offset, $limit) {
+        $qb = $this->createQueryBuilder('a');
+        $qb->leftJoin('a.image', 'i')
+                ->addSelect('i')
+                ->leftJoin('a.tags', 't')
+                ->addSelect('t')
+                ->where('a.publication = true')
+                ->orderBy('a.date', 'DESC')
+                ->setFirstResult($offset)
+                ->setMaxResults($limit)
+        ;
+
+        //
+        return $qb->getQuery()->getArrayResult();
+    }
+
     public function getArticlesByTagWithLeftJoin($id) {
         $qb = $this->createQueryBuilder('a');
         $qb->leftJoin('a.image', 'i')
