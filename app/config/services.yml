@@ -42,3 +42,10 @@ services:
         arguments:
             $max: '%max%'
             $suite: ' [...]'
+
+    app.maintenance:
+        class: AppBundle\Listener\MaintenanceListener
+        arguments:
+            $actif: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
