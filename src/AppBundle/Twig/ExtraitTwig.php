@@ -37,4 +37,8 @@ class ExtraitTwig extends \Twig_Extension {
         return array(new \Twig_SimpleFunction('extrait', array($this, 'get')));
     }
 
+    public function getFilters() {
+        return array(new \Twig_SimpleFilter('extrait', array($this, 'get')));
+    }
+
 }
