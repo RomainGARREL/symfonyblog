@@ -38,3 +38,7 @@ services:
     AppBundle\Service\ExtraitWithLink:
         arguments:
             $max: '%max%'
+    AppBundle\Twig\ExtraitTwig:
+        arguments:
+            $max: '%max%'
+            $suite: ' [...]'

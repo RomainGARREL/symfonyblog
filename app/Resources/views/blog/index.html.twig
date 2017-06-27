@@ -12,7 +12,8 @@
             <h1>{{ article.titre}}</h1>
         </a>
         {#<p>{{ article.contenu | raw }}</p>#}
-        <p>{{ article.extrait | raw }}</p>
+        {#<p>{{ article.extrait | raw }}</p>#}
+        {{ extrait(article.contenu)}}
         <p>{{ article.date | date('d-m-y') }}</p>
 
 
