@@ -11,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use function dump;
 
 /**
  * @Route("/blog")
@@ -23,31 +22,25 @@ class BlogController extends Controller {
      * defaults={"p": 1},
      * requirements={"p": "\d+"})
      */
-    public function indexAction(Request $request, \AppBundle\Service\Extrait $extrait, \AppBundle\Service\ExtraitWithLink $extraitWithLink, $p) {
-
+    public function indexAction(
+    Request $request, \AppBundle\Service\Extrait $extrait, \AppBundle\Service\ExtraitWithLink $extraitWithLink, $p
+    ) {
         $limit = $this->getParameter('item_par_page');
         $offset = $limit * $p - 1;
+        $ar = $this->getDoctrine()->getManager();
+        $articles = $ar->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination($offset, $limit);
 
-        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination($offset, $limit);
+        // Mon Code [
+        $nbArticle = $articles->count();
+        $nbPages = ceil($nbArticle / $limit);
 
         return $this->render('blog/index.html.twig', [
                     'articles' => $articles,
+                    'pages' => $nbPages,
+                    'page_active' => $p,
         ]);
+        //Mon Code ]
     }
-
-//        /**
-//     * @Route("/default", name="homepage")
-//     */
-//    public function indexAction(Request $request, Extrait $extrait) {
-//        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->findAll();
-//        foreach ($articles as $article) {
-//
-//            $article->setExtrait($extrait->get($article->getContenu));
-//        }
-//        return $this->render('default/index.html.twig', [
-//                    'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
-//        ]);
-//    }
 
     /**
      * @Route("/ajouter", name="blog_ajouter")
@@ -57,7 +50,7 @@ class BlogController extends Controller {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
         $em = $this->getDoctrine()->getManager();
-        // Traitement, si il ya des donnees a recuperer dans la requete elle va hydrater notre article avec celles-ci
+
         $session = $this->get('session');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,59 +65,7 @@ class BlogController extends Controller {
             }
         }
 
-//
-//        $formBuilder = $this->createFormBuilder($article);
-//        $formBuilder->add('titre', TextType::class)
-//                ->add('contenu', TextareaType::class)
-//                ->add('date', DateType::class, array('widget' => 'single_text', 'html5' => false, 'format' => 'yyyy-MM-dd'))
-//                ->add('publication', null, ['required' => false, 'label' => 'Publié ?'])
-//                ->add('submit', SubmitType::class, ['label' => 'Envoyer'])
-//        ;
-//        $form = $formBuilder->getForm(); // on retourne un objet formulaire
         return $this->render('blog/ajouter.html.twig', ['form' => $form->createView(),]);
-//        $article->setTitre('Hello Word')
-//                ->setContenu('Lorem ipsum');
-//
-//        //2eme Partie Image
-//        $image = new \AppBundle\Entity\Image();
-//        $image->setAlt('robobohash');
-//        $image->setUrl('https://robohash.org/' . rand() . '.png');
-//        $article->setImage($image); // la ligne la plus importante
-//        //
-//        //3eme Partie Commentaire
-//        $commentaire = new \AppBundle\Entity\Commentaire();
-//        $commentaire->setContenu('Commentaire 1 de larticle');
-//        $commentaire->setDate(new \DateTime);
-//        $commentaire->setArticle($article);
-//        //
-//        $commentaire2 = new \AppBundle\Entity\Commentaire();
-//        $commentaire2->setContenu('Commentaire 2 de larticle');
-//        $commentaire2->setDate(new \DateTime);
-//        $commentaire2->setArticle($article);
-//
-//        //4eme Partie
-//        $tag1 = new \AppBundle\Entity\Tag();
-//        $tag1->setTitre('NomTag1');
-//        $article->addTag($tag1);
-//
-//        $tag2 = new \AppBundle\Entity\Tag();
-//        $tag2->setTitre('NomTag2');
-//        $article->addTag($tag2);
-//
-//
-//        //  Common Partie 1, 2 et 3
-//        $doctrine = $this->getDoctrine();
-//        $em = $doctrine->getManager();
-//        $em->persist($article);
-//        //
-//        $em->persist($commentaire);
-//        $em->persist($commentaire2);
-//
-//        // pas besoin de mettre l'image en persist puisque fait dans Cascade Image dans Article
-//        $em->flush();
-//
-//        return $this->redirectToRoute('blog_detail', ['id' => $article->getId()]);
-//         return $this->render('blog/ajouter.html.twig');
     }
 
     /**
@@ -162,9 +103,7 @@ class BlogController extends Controller {
      * requirements={"id": "\d+"})
      */
     public function suprimerAction($id) {
-        // faire un lien sur le detail de chaqye article avec un lien pour le suprimer
-        // on utilise le path et l'id de l'article a suprimer
-        //1er Partie
+
         $em = $this->getDoctrine()->getManager();
         $ar = $em->getRepository('AppBundle:Article');
         $article = $ar->find($id);
@@ -199,10 +138,6 @@ class BlogController extends Controller {
         $commentaire->setArticle($article);
 
         $form = $this->createForm(CommentaireType::class, $commentaire, ['action' => $this->generateUrl('ajouter_commentaire_blog', ['id' => $id])]);
-
-
-
-
 
         return $this->render('blog/detail.html.twig', ['article' => $article, 'form' => $form->createView()]);
     }

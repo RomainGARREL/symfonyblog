@@ -76,7 +76,6 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
         return $articles;
     }
 
-    // Warning Function below probably in the wrong place
     public function getNumberOfArticlesByTagWithLeftJoin($id) {
         $qb = $this->createQueryBuilder('a');
         $qb->select('count(a)')
@@ -90,8 +89,6 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
         return $numberOfArticles;
     }
 
-    // Useless Method, just here to practice as we get back to work.
-    // Purpose of this method, to display the last 3 articles published in the footer
     public function getLastThreeArticlesByDateWithLeftJoin($limit) {
         $qb = $this->createQueryBuilder('a');
         $qb
