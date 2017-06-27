@@ -55,8 +55,8 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
                 ->setMaxResults($limit)
         ;
 
-        //
-        return $qb->getQuery()->getArrayResult();
+        $query = $qb->getQuery();
+        return new \Doctrine\ORM\Tools\Pagination\Paginator($query);
     }
 
     public function getArticlesByTagWithLeftJoin($id) {

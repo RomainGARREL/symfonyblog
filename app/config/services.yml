@@ -3,6 +3,7 @@
 parameters:
     suite: '...'
     max: 50
+    item_par_page: 5
 
 services:
     # default configuration for services in *this* file

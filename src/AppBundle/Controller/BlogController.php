@@ -24,7 +24,11 @@ class BlogController extends Controller {
      * requirements={"p": "\d+"})
      */
     public function indexAction(Request $request, \AppBundle\Service\Extrait $extrait, \AppBundle\Service\ExtraitWithLink $extraitWithLink, $p) {
-//        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination(0, 5);
+
+        $limit = $this->getParameter('item_par_page');
+        $offset = $limit * $p - 1;
+
+        $articles = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination($offset, $limit);
 
         return $this->render('blog/index.html.twig', [
                     'articles' => $articles,
