@@ -1,9 +1,9 @@
-
+{% extends "::blog/layout.html.twig" %}
 
 {% block body_layout %}
 
-    <h3>{{ count}}</h3>
-    {% for article in articles %}
+    <h3></h3>
+    {% for article in pagination %}
         <a href= '{{path("blog_detail",{id:article.id})}}'>
             <h1>{{ article.titre}}</h1>
         </a>
@@ -17,7 +17,12 @@
         {% else  %}
             <p>Pas d'image disponible</p>
         {% endif %}
-
-
     {% endfor %}
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+
+
 {%endblock%}
