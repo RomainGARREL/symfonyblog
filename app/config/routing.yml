@@ -1,3 +1,7 @@
+app_tag:
+    resource: "@AppBundle/Controller/TagController.php"
+    type:     annotation
+
 rg_echange:
     resource: "@RGEchangeBundle/Resources/config/routing.yml"
     prefix:   /romain
@@ -5,3 +9,6 @@ rg_echange:
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
