@@ -2,7 +2,7 @@
 
 {% block body_layout %}
 
-    <h3></h3>
+    <h4>{{ knp_pagination_sortable(pagination, 'Release', ['a.date']) }}</h4>
     {% for article in pagination %}
         <a href= '{{path("blog_detail",{id:article.id})}}'>
             <h1>{{ article.titre}}</h1>
@@ -22,6 +22,8 @@
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}
     </div>
+
+
 
 
 
