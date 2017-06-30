@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/blog")
@@ -43,9 +44,13 @@ class BlogController extends Controller {
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
      * @Route("/ajouter", name="blog_ajouter")
      */
     public function ajouterAction(Request $request) {
+
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
         $user = $this->getUser();
         $article = new Article();
         $article->setUser($user);
@@ -71,11 +76,12 @@ class BlogController extends Controller {
     }
 
     /**
+     * @Security("is_granted('ROLE_SUPER_ADMIN') or user == article.getUser()")
      * @Route("/modifier/{id}", name="blog_modifier",
      * requirements={"id": "\d+"})
      */
-    public function modifierAction(Request $request, $id) {
-
+    public function modifierAction(Request $request, $id, Article $article) {
+        // le Article $article above c'est only pour que l'annotation de securi fonctionne
         $em = $this->getDoctrine()->getManager();
 
         $article = $em->getRepository('AppBundle:Article')->find($id);
