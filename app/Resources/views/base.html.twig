@@ -39,6 +39,18 @@
                     {% endif %}
 
                     <a class="navbar-brand" href="{{ path ('new_produits_catalogue')}}">Nouveautés</a>
+
+                    {% if is_granted('ROLE_USER') %}
+                        <a class="navbar-brand" href="{{ path ('fos_user_security_logout')}}">
+                            {{ 'Hi ' ~ app.user.username ~ ' : se déconnecter' }}
+                        </a>
+                    {% else %}
+                        <a class="navbar-brand" href="{{ path ('fos_user_security_login')}}">
+                            Login
+                        </a>
+                    {% endif %}
+
+
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                 </div><!--/.nav-collapse -->
