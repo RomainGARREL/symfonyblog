@@ -46,8 +46,10 @@ class BlogController extends Controller {
      * @Route("/ajouter", name="blog_ajouter")
      */
     public function ajouterAction(Request $request) {
-
+        $user = $this->getUser();
         $article = new Article();
+        $article->setUser($user);
+
         $form = $this->createForm(ArticleType::class, $article);
         $em = $this->getDoctrine()->getManager();
 
@@ -73,14 +75,16 @@ class BlogController extends Controller {
      * requirements={"id": "\d+"})
      */
     public function modifierAction(Request $request, $id) {
-        //$ar = $em->getRepository('AppBundle:Article');
+
         $em = $this->getDoctrine()->getManager();
+
         $article = $em->getRepository('AppBundle:Article')->find($id);
-
-
+        //Mon Code [
+        $user = $this->getUser();
+        $article->setUser($user);
+        //]
         $form = $this->createForm(ArticleType::class, $article);
-        //$em = $this->getDoctrine()->getManager();
-        // Traitement, si il ya des donnees a recuperer dans la requete elle va hydrater notre article avec celles-ci
+
         $session = $this->get('session');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

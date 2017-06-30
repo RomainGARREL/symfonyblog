@@ -9,6 +9,7 @@
     <h1>{{ article.titre}}</h1>
     <p>{{ article.contenu | raw }}</p>
     <p>{{ article.date | date('d-m-y') }}</p>
+    <p>{{ 'Autheur: ' ~ article.user}}</p>
 
 
     {% if article.image %}
@@ -17,14 +18,16 @@
         <p>Pas d'image disponible</p>
     {% endif %}
 
-    <a href= '{{path("blog_suprimer",{id:article.id})}}'>
-        <p>suprimer</p>
-    </a>
+    {% if (is_granted('SUPER_ADMIN') or (app.user == article.user))  %}
+        <a href= '{{path("blog_suprimer",{id:article.id})}}'>
+            <p>suprimer</p>
+        </a>
 
-    <a href= '{{path("blog_modifier",{id:article.id})}}'>
-        <p>modifier</p>
-    </a>
-    {#<p>{{ commentaire.contenu ~ ' By ' ~ commentaire.user.username }}</p>#}
+        <a href= '{{path("blog_modifier",{id:article.id})}}'>
+            <p>modifier</p>
+        </a>
+    {% endif  %}
+
     <div id="commentaire">
         {#{% for commentaire in commentaires %}#}
         {% for commentaire in article.commentaires %}
@@ -43,12 +46,9 @@
         <p>Pas de Tag</p>
     {% endfor %}
 
-
-    {#_____________________________#}
     {{form_start(form)}}
     {{form_widget(form)}} <img src="{{ asset('image/rolling.gif')}}" style="display:none" id="loading">
     {{form_end(form)}}
-
 
 {%endblock%}
 {% block javascripts %}
