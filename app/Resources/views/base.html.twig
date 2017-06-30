@@ -40,7 +40,7 @@
 
                     <a class="navbar-brand" href="{{ path ('new_produits_catalogue')}}">Nouveautés</a>
 
-                    {% if is_granted('ROLE_USER') %}
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <a class="navbar-brand" href="{{ path ('fos_user_security_logout')}}">
                             {{ 'Hi ' ~ app.user.username ~ ' : se déconnecter' }}
                         </a>
