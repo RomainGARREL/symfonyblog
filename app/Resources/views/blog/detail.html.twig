@@ -24,11 +24,11 @@
     <a href= '{{path("blog_modifier",{id:article.id})}}'>
         <p>modifier</p>
     </a>
-
+    {#<p>{{ commentaire.contenu ~ ' By ' ~ commentaire.user.username }}</p>#}
     <div id="commentaire">
         {#{% for commentaire in commentaires %}#}
         {% for commentaire in article.commentaires %}
-            <p>{{ commentaire.contenu }}</p>
+            <p>{{ commentaire.contenu ~ ' By ' ~ commentaire.user}}</p>
             <p>{{ commentaire.date | date('d-m-y') }}</p>
         {% else  %}
             <p>Pas de commentaire</p>
@@ -69,6 +69,7 @@
                                 data: {
                                     id:{{article.id}} ,
                                     contenu: $('form[name=appbundle_commentaire] textarea').val()
+
                                 },
                                 error: function () {
                                     alert('error');
@@ -82,7 +83,9 @@
                                     if (data.success) {
                                         $('#commentaire').prepend('<p>'
                                                 + data.commentaire.date
-                                                + '<br>' + data.commentaire.contenu + '</p>');
+                                                + '<br>' + data.commentaire.contenu + ' By '
+                                                + data.commentaire.user + '</p>')
+                                                ;
                                     } else {
                                         $('form[name = appbundle_commentaire] button').after('<p id="erreur_ajax" class="alert alert-danger">Pb: Et merde! </p>');
                                     }

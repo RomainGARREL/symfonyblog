@@ -146,7 +146,8 @@ class BlogController extends Controller {
      * @Route("/tag/{id}", name="blog_tag",
      * requirements={"id": "\d+"})
      */
-    public function tagAction($id) {
+    public function tagAction(Request $request, $id) {
+
         $em = $this->getDoctrine()->getManager();
 
         $ar = $em->getRepository('AppBundle:Article');
@@ -156,11 +157,19 @@ class BlogController extends Controller {
         $tag = $tr->find($id);
         $count = $ar->getNumberOfArticlesByTagWithLeftJoin($id);
 
+        //My code perso [
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $articles, $request->query->getInt('page', 1)/* page number */, 2/* limit per page */
+        );
+
         return $this->render('blog/tag.html.twig', [
-                    'tag' => $tag,
-                    'articles' => $articles,
-                    'count' => $count
+                    //'tag' => $tag,
+                    //'articles' => $articles,
+                    //'count' => $count,
+                    'pagination' => $pagination
         ]);
+        //My code perso ]
     }
 
     public function footerAction($nb) {
@@ -246,9 +255,15 @@ class BlogController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $ar = $em->getRepository('AppBundle:Article');
             $article = $ar->find($id);
+
             $commentaire = new Commentaire();
             $commentaire->setArticle($article);
             $commentaire->setContenu($contenu);
+
+            //Below my code [
+            $user = $this->getUser();
+            $commentaire->setUser($user);
+            //
             $em->persist($commentaire);
 
             try {
@@ -258,7 +273,8 @@ class BlogController extends Controller {
                     'commentaire' => [
                         'id' => $commentaire->getId(),
                         'contenu' => $commentaire->getContenu(),
-                        'date' => $commentaire->getDate()->format('Y-m-d')
+                        'date' => $commentaire->getDate()->format('Y-m-d'),
+                        'user' => $user->getUsername()
                     ]
                         ]
                 );
