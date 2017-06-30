@@ -18,6 +18,13 @@ class Commentaire {
     }
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $user;
+
+    /**
      * @var Article
      *
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="commentaires")
@@ -125,4 +132,28 @@ class Commentaire {
         return $this->article;
     }
 
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Commentaire
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
