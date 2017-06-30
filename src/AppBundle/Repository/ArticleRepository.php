@@ -71,9 +71,9 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
                 ->setParameter(1, $id)//->setParameter(2, $date) c'est deux lignes pour explique why ?1
                 ->orderBy('a.date', 'DESC');
         //
-        $querry = $qb->getQuery();
-        $articles = $querry->getArrayResult(); // equivalent d'un fetch
-        return $articles;
+        return $querry = $qb->getQuery();
+        //   $articles = $querry->getArrayResult(); // equivalent d'un fetch
+        //   return $articles;
     }
 
     public function getNumberOfArticlesByTagWithLeftJoin($id) {
