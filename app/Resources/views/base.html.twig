@@ -34,7 +34,10 @@
                     </button>
                     <a class="navbar-brand" href="{{ path ('homepage')}}">Home</a>
                     <a class="navbar-brand" href="{{ path ('homepage_blog')}}">Blog</a>
-                    <a class="navbar-brand" href="{{ path ('blog_ajouter')}}">Edit</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="navbar-brand" href="{{ path ('blog_ajouter')}}">Ajouter</a>
+                    {% endif %}
+
                     <a class="navbar-brand" href="{{ path ('new_produits_catalogue')}}">Nouveautés</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
