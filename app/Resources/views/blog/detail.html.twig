@@ -13,7 +13,7 @@
 
 
     {% if article.image %}
-        <img src="{{article.image.url}}" alt="{{article.image.alt}}" >
+        <img src="{{asset('uploads/')~article.image.baseUrl}}" alt="{{article.image.alt}}" >
     {% else  %}
         <p>Pas d'image disponible</p>
     {% endif %}

@@ -103,7 +103,6 @@ class Image {
         return $this->alt;
     }
 
-
     /**
      * Set name
      *
@@ -111,8 +110,7 @@ class Image {
      *
      * @return Image
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -123,8 +121,12 @@ class Image {
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
+
+    public function baseUrl() {
+        return basename($this->url);
+    }
+
 }
