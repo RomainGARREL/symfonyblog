@@ -12,6 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
+ * 
  */
 class Article {
 
@@ -377,7 +378,6 @@ class Article {
         return $this->user;
     }
 
-
     /**
      * Set slug
      *
@@ -385,8 +385,7 @@ class Article {
      *
      * @return Article
      */
-    public function setSlug($slug)
-    {
+    public function setSlug($slug) {
         $this->slug = $slug;
 
         return $this;
@@ -397,8 +396,8 @@ class Article {
      *
      * @return string
      */
-    public function getSlug()
-    {
+    public function getSlug() {
         return $this->slug;
     }
+
 }

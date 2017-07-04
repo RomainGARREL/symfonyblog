@@ -59,8 +59,18 @@ class BlogController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $session = $this->get('session');
+
+
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //Code Armand not in the Doc [
+            $uploadableManager = $this->get('stof_doctrine_extensions.uploadable.manager');
+            $image = $article->getImage();
+            if ($image) {
+                $uploadableManager->markEntityToUpload($image, $image->getUrl());
+            }
+            // ]
             try {
                 $em->persist($article);
                 $em->flush();

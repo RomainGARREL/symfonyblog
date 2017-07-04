@@ -4,12 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Image
  *
  * @ORM\Table(name="image")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ImageRepository")
+ * @Gedmo\Uploadable (  filenameGenerator="ALPHANUMERIC", appendNumber=true, maxSize = "500000", allowedTypes="image/jpeg,image/png,image/gif,image/svg+xml")
  */
 class Image {
 
@@ -23,8 +25,14 @@ class Image {
     private $id;
 
     /**
+     * @ORM\Column(name="name", type="string")
+     * @Gedmo\UploadableFileName
+     */
+    private $name;
+
+    /**
      * @var string
-     *
+     * @Gedmo\UploadableFilePath
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
@@ -95,4 +103,28 @@ class Image {
         return $this->alt;
     }
 
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Image
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }
