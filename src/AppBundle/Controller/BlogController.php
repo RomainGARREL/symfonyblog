@@ -65,7 +65,7 @@ class BlogController extends Controller {
                 $em->persist($article);
                 $em->flush();
                 $session->getFlashBag()->add('succes', 'Article créé');
-                return $this->redirectToRoute('blog_detail', ['id' => $article->getId()]);
+                return $this->redirectToRoute('blog_detail', ['slug' => $article->getSlug()]);
             } catch (\Exception $e) {
                 $session->getFlashBag()->add('Erreur', 'Pb creation:' . $e->getMessage() . $e->getFile());
                 //return $this->redirectToRoute('blog_ajouter');
