@@ -17,7 +17,7 @@ class ExtraitWithLink {
 
     private $router, $max;
 
-    public function __construct(\Symfony\Component\Routing\Router $router, $max) {
+    public function __construct(\Symfony\Component\Routing\RouterInterface $router, $max) {
         $this->router = $router;
         $this->max = $max;
     }
