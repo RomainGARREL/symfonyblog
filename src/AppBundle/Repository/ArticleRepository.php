@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository {
 
-    public function getArticleByIdWithLeftJoin($id) {
+    public function getArticleBySlugWithLeftJoin($slug) {
         $qb = $this->createQueryBuilder('a');
         $qb->leftJoin('a.image', 'i')
                 ->addSelect('i')
@@ -18,8 +18,8 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
                 ->addSelect('c')
                 ->leftJoin('a.tags', 't')
                 ->addSelect('t')
-                ->where('a.id = ?1')//andWhere('a.id = ?2')
-                ->setParameter(1, $id)//->setParameter(2, $date) c'est deux lignes pour explique why ?1
+                ->where('a.slug = ?1')//andWhere('a.id = ?2')
+                ->setParameter(1, $slug)//->setParameter(2, $date) c'est deux lignes pour explique why ?1
                 ->orderBy('a.date', 'DESC');
         //
         $querry = $qb->getQuery();

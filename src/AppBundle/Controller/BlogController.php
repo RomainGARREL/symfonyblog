@@ -133,21 +133,21 @@ class BlogController extends Controller {
     }
 
     /**
-     * @Route("/detail/{id}", name="blog_detail",
-     * requirements={"id": "\d+"})
+     * @Route("/detail/{slug}", name="blog_detail",
+     * requirements={"slug": "[a-z0-9\-]+$"})
      */
-    public function detailAction(Request $request, $id) {
+    public function detailAction(Request $request, $slug) {
 
         $em = $this->getDoctrine()->getManager();
 
         $ar = $em->getRepository('AppBundle:Article');
 
-        $article = $ar->getArticleByIdWithLeftJoin($id);
+        $article = $ar->getArticleBySlugWithLeftJoin($slug);
 
         $commentaire = new Commentaire();
         $commentaire->setArticle($article);
 
-        $form = $this->createForm(CommentaireType::class, $commentaire, ['action' => $this->generateUrl('ajouter_commentaire_blog', ['id' => $id])]);
+        $form = $this->createForm(CommentaireType::class, $commentaire, ['action' => $this->generateUrl('ajouter_commentaire_blog', ['slug' => $slug])]);
 
         return $this->render('blog/detail.html.twig', ['article' => $article, 'form' => $form->createView()]);
     }
@@ -222,8 +222,8 @@ class BlogController extends Controller {
 
     /**
      * @Method({"POST"})
-     * @Route("/ajouter_commentaire_blog/{id}", name="ajouter_commentaire_blog",
-     * requirements={"id": "\d+"})
+     * @Route("/ajouter_commentaire_blog/{slug}", name="ajouter_commentaire_blog",
+     * requirements={"slug": "[a-z0-9\-]+$"})
      */
     public function ajouterCommentaireAction(Request $request, \AppBundle\Entity\Article $article) {
         $commentaire = new Commentaire();

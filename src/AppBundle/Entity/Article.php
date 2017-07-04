@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Article
@@ -29,6 +30,13 @@ class Article {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     *
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
 
     /**
      * @var string
@@ -347,7 +355,6 @@ class Article {
         $this->setDateModification(new \DateTime);
     }
 
-
     /**
      * Set user
      *
@@ -355,8 +362,7 @@ class Article {
      *
      * @return Article
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
+    public function setUser(\AppBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -367,8 +373,32 @@ class Article {
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
+    }
+
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Article
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
