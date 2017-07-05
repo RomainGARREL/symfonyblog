@@ -321,4 +321,14 @@ class BlogController extends Controller {
         }
     }
 
+    /**
+     * @Route("/traduction", name="trad_blog")
+     */
+    public function traductionAction() {
+        $message = $this->get('translator')->trans('message');
+        $date = new \DateTime; // le \ c'est parce que class native de php donc indique repertoire racine
+        return $this->render('blog/traduction.html.twig', ['messageController' => $message, 'date' => $date]);
+        // Pour recuperer ma clé message dans le controlleur
+    }
+
 }
