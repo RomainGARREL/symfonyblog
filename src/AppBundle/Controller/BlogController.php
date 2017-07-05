@@ -67,7 +67,8 @@ class BlogController extends Controller {
             //Code Armand not in the Doc [
             $uploadableManager = $this->get('stof_doctrine_extensions.uploadable.manager');
             $image = $article->getImage();
-            if ($image) {
+            if ($request->files->get($form->getName())['image']['url']) {
+                $image->setUrl($request->files->get($form->getName())['image']['url']);
                 $uploadableManager->markEntityToUpload($image, $image->getUrl());
             }
             // ]
@@ -104,6 +105,17 @@ class BlogController extends Controller {
         $session = $this->get('session');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //**************************************
+            $uploadableManager = $this->get('stof_doctrine_extensions.uploadable.manager');
+            $image = $article->getImage();
+            $url = $request->files->get($form->getName())['image']['url'];
+            if ($url) {
+                if (is_file($image->getUrl()))
+                    unlink($image->getUrl());
+                $image->setUrl($url);
+                $uploadableManager->markEntityToUpload($image, $image->getUrl());
+            }
+            //**************************************
             try {
                 $em->persist($article);
                 $em->flush();
@@ -127,6 +139,9 @@ class BlogController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $ar = $em->getRepository('AppBundle:Article');
         $article = $ar->find($id);
+
+        if ($article->getImage()) // pour eviter le plantage si on a pas chargé d'image
+            $article->getImage()->getUrl(); // Pour forcer à hydrater l'image final day matin
 
         $em->remove($article);
 
