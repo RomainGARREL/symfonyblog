@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Article
@@ -12,9 +13,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
- * 
+ *
+ * @Gedmo\TranslationEntity(class="AppBundle\Entity\ArticleTraduction")
+ *
  */
-class Article {
+class Article implements Translatable {
 
     /**
      * @var User
@@ -41,6 +44,7 @@ class Article {
 
     /**
      * @var string
+     * @Gedmo\Translatable
      * @Assert\Length(
      *      min = 2,
      *      max = 50,
@@ -54,6 +58,7 @@ class Article {
 
     /**
      * @var string
+     * @Gedmo\Translatable
      * @Assert\NotBlank(
      *  message = "Entrer un contenu valide"
      * )
@@ -67,6 +72,13 @@ class Article {
      * @var string
      */
     private $extrait;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
 
     public function getExtrait() {
         return $this->extrait;
@@ -398,6 +410,10 @@ class Article {
      */
     public function getSlug() {
         return $this->slug;
+    }
+
+    public function setTranslatableLocale($locale) {
+        $this->locale = $locale;
     }
 
 }
