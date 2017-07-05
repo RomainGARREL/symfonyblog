@@ -1,6 +1,8 @@
 <?php
 
-namespace AppBundle\Entity; // not the one of the doc but the one of MY namespace
+namespace AppBundle\Entity;
+
+// not the one of the doc but the one of MY namespace
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;

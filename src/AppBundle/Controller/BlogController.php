@@ -29,7 +29,7 @@ class BlogController extends Controller {
         $limit = $this->getParameter('item_par_page');
         $offset = $limit * $p - 1;
         $ar = $this->getDoctrine()->getManager();
-        $articles = $ar->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination($offset, $limit);
+        $articles = $ar->getRepository('AppBundle:Article')->getdArticlesWithJoinAndWithPagination($offset, $limit, $request->getLocale());
 
         // Mon Code [
         $nbArticle = $articles->count();
@@ -48,6 +48,10 @@ class BlogController extends Controller {
      * @Route("/ajouter", name="blog_ajouter")
      */
     public function ajouterAction(Request $request) {
+
+        if ($request->getLocale() != $this->getParameter('locale')) {
+            return $this->redirectToRoute('blog_ajouter', ['_locale' => $this->getParameter('locale')]);
+        }
 
         //$this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
 
