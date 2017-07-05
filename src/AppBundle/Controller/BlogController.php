@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Route("/blog")
+ * @Route("/{_locale}/blog", defaults={"_locale": "fr"}, requirements={"_locale": "fr|en"})
  */
 class BlogController extends Controller {
 
