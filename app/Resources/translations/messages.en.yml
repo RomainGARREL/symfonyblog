@@ -3,3 +3,6 @@ texte:
     hello: Hi Everyone
     ciao: Good Bye
     pluriel: there is %count% apple |]1,+Inf] there are %count% apples
+
+menu:
+    home: Home
